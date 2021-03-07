@@ -5,6 +5,7 @@ package com.itheima.controller;
  */
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.constant.MessageConstant;
+import com.itheima.entity.CheckItemDeleteFailException;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
 import com.itheima.entity.Result;
@@ -41,5 +42,20 @@ public class CheckItemController {
         return pageResult;
     }
 
+    //删除检查项
+    @RequestMapping("/delete")
+    public Result delete(Integer id){
+        try {
+            checkItemService.deleteById(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            if(e instanceof CheckItemDeleteFailException){
+                return new Result(false,"已经有检查组关联此检查项，请优先删除检查组后再操作");
+            }
+            //服务调用失败
+            return new Result(false, MessageConstant.DELETE_CHECKGROUP_FAIL);
+        }
+        return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
+    }
 
 }

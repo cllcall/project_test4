@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.itheima.dao.CheckItemDao;
+import com.itheima.entity.CheckItemDeleteFailException;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.CheckItem;
@@ -34,5 +35,15 @@ public class CheckItemServiceImpl implements CheckItemService {
         long total = page.getTotal();
         List<CheckItem> rows = page.getResult();
         return new PageResult(total,rows);
+    }
+
+    //根据ID删除检查项
+    public void deleteById(Integer id) throws CheckItemDeleteFailException {
+        //判断当前检查项是否已经关联到检查组
+        long count = checkItemDao.findCountByCheckItemId(id);
+        if(count > 0) {
+            throw new CheckItemDeleteFailException();
+        }
+        checkItemDao.deleteById(id);
     }
 }
