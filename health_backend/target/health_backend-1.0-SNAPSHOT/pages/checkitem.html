@@ -230,6 +230,31 @@
             methods: {
                 //编辑
                 handleEdit() {
+                    //进行表单校验
+                    this.$refs['dataEditForm'].validate((valid) => {
+                        if(valid){
+                            //表单校验通过，可以提交数据
+                            axios.post("/checkitem/edit.do",this.formData).then((res) => {
+                                if(res.data.flag){
+                                    this.$message({
+                                       type: "success",
+                                       message: res.data.message
+                                    });
+                                }else {
+                                    //执行失败
+                                    this.$message.error(res.data.message);
+                                }
+                            }).finally(() => {
+                                //执行失败
+                                this.findPage();
+                                this.dialogFormVisible4Edit =false;
+                            });
+                        }else{
+                            //表单校验不通过
+                            this.$message.error("表单数据校验失败！");
+                            return false;
+                        }
+                    });
                 },
                 //添加
                 handleAdd () {
@@ -285,6 +310,19 @@
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    //弹出编辑窗口
+                    this.dialogFormVisible4Edit = true;
+                    //回显数据，发送ajax请求根据ID查询当前检查项数据
+                    axios.get("/checkitem/findById.do?id=" + row.id).then((res) => {
+                        if(res.data.flag){
+                            //进行回写
+                            this.formData = res.data.data;
+                        }else{
+                            //查询失败，弹出提示
+                            this.$message.error(res.data.message);
+                        }
+                    });
+                    // this.formData = row;
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
@@ -312,7 +350,7 @@
                                 this.findPage();
                             }else{
                                 //执行失败
-                                this.$message().error(res.data.message);
+                                this.$message.error(res.data.message);
                             }
                         });
                     }).catch(()=>{
