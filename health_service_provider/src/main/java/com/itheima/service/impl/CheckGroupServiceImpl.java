@@ -30,14 +30,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         checkGroupDao.add(checkGroup);
         //设置检查组和检查项的多对多的关联关系，操作t_checkgroup_checkitem
         Integer checkGroupId = checkGroup.getId();
-        if(checkitemIds != null && checkitemIds.length > 0){
-            for(Integer checkitemId: checkitemIds){
-                Map<String,Integer> map = new HashMap<>();
-                map.put("checkgroupId",checkGroupId);
-                map.put("checkitemId",checkitemId);
-                checkGroupDao.setCheckGroupAndCheckItem(map);
-            }
-        }
+        this.setCheckGroupAndCheckItem(checkGroupId,checkitemIds);
     }
 
     //分页查询
@@ -58,6 +51,35 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     //根据检查组ID查询关联的检查项
     public List<Integer> findCheckItemIdsByCheckGroupId(Integer id) {
         return checkGroupDao.findCheckItemIdsByCheckGroupId(id);
+    }
+
+    //编辑检查组信息，同时要关联检查项
+    public void edit(CheckGroup checkGroup, Integer[] checkitemIds) {
+        //修改检查组的基本信息，操作t_checkgroup
+        checkGroupDao.edit(checkGroup);
+        //清理当前检查组关联的检查项，操作中间表t_checkgroup_checkitem
+        checkGroupDao.deleteAssocication(checkGroup.getId());
+        //重新建立当前检查组和检查项的关联关系
+        Integer checkGroupId = checkGroup.getId();
+        this.setCheckGroupAndCheckItem(checkGroupId,checkitemIds);
+    }
+
+    //删除检查组
+    public void deleteById(Integer id) {
+        checkGroupDao.deleteAssocication(id);
+        checkGroupDao.deleteById(id);
+    }
+
+    //建立检查组和检查项多对多关系
+    public void setCheckGroupAndCheckItem(Integer checkGroupId,Integer[] checkitemIds){
+        if(checkitemIds != null && checkitemIds.length > 0){
+            for(Integer checkitemId: checkitemIds){
+                Map<String,Integer> map = new HashMap<>();
+                map.put("checkgroupId",checkGroupId);
+                map.put("checkitemId",checkitemId);
+                checkGroupDao.setCheckGroupAndCheckItem(map);
+            }
+        }
     }
 
 

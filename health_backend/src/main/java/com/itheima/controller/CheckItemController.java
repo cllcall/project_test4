@@ -56,9 +56,9 @@ public class CheckItemController {
                 return new Result(false,"已经有检查组关联此检查项，请优先删除检查组后再操作");
             }
             //服务调用失败
-            return new Result(false, MessageConstant.DELETE_CHECKGROUP_FAIL);
+            return new Result(false, MessageConstant.DELETE_CHECKITEM_FAIL);
         }
-        return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
+        return new Result(true, MessageConstant.DELETE_CHECKITEM_SUCCESS);
     }
 
     //编辑检查项
