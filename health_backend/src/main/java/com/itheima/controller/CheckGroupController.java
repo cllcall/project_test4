@@ -2,6 +2,8 @@ package com.itheima.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.constant.MessageConstant;
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
 import com.itheima.entity.Result;
 import com.itheima.pojo.CheckGroup;
 import com.itheima.service.CheckGroupService;
@@ -9,6 +11,8 @@ import com.itheima.service.CheckItemService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 检查组管理
@@ -28,5 +32,35 @@ public class CheckGroupController {
             return new Result(false, MessageConstant.ADD_CHECKGROUP_FAIL);
         }
         return new Result(true,MessageConstant.ADD_CHECKGROUP_SUCCESS);
+    }
+
+    //分页查询检查组
+    @RequestMapping("/findPage")
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
+        return checkGroupService.pageQuery(queryPageBean);
+    }
+
+    //根据ID查检查组
+    @RequestMapping("/findById")
+    public Result findById(Integer id){
+        try {
+            CheckGroup checkGroup = checkGroupService.findById(id);
+            return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroup);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConstant.QUERY_CHECKGROUP_FAIL);
+        }
+    }
+
+    //根据检查组ID查询关联的检查项
+    @RequestMapping("/findCheckItemIdsByCheckGroupId")
+    public Result findCheckItemIdsByCheckGroupId(Integer id){
+        try {
+            List<Integer> checkItemIds = checkGroupService.findCheckItemIdsByCheckGroupId(id);
+            return new Result(true,MessageConstant.QUERY_CHECKITEM_SUCCESS,checkItemIds);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConstant.QUERY_CHECKITEM_FAIL);
+        }
     }
 }

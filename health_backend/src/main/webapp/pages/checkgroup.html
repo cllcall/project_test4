@@ -305,6 +305,18 @@
                 },
                 //分页查询
                 findPage() {
+                    //封装分页的参数
+                    var param = {
+                        currentPage: this.pagination.currentPage,
+                        pageSize:this.pagination.pageSize,
+                        queryString: this.pagination.queryString
+                    }
+                    //发送ajax请求，提交分页相关参数
+                    axios.post("/checkgroup/findPage.do",param).then((res) => {
+                        //为VUE对象的模型数据赋值，基于双向数据绑定展示到页面
+                        this.pagination.total = res.data.total;
+                        this.dataList = res.data.rows;
+                    });
                 },
                 // 重置表单
                 resetForm() {
@@ -330,9 +342,39 @@
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    this.dialogFormVisible4Edit = true;
+                    this.activeName = 'first';
+                    //根据id查询检查组信息
+                    axios.get("/checkgroup/findById.do?id="+row.id).then((res) => {
+                       if(res.data.flag){
+                           this.formData = res.data.data;
+                       } else {
+                           this.$message.error(res.data.message);
+                       }
+                    });
+                    //查询所有检查项信息
+                    axios.get("/checkitem/findAll.do").then((res) => {
+                        if(res.data.flag){
+                            //查询检查项数据成功
+                            this.tableData = res.data.data;
+                            //发送ajax请求，根据检查组ID查询关联的检查项信息，用于页面复选框回写
+                            axios.get("/checkgroup/findCheckItemIdsByCheckGroupId.do?id="+row.id).then((res) => {
+                               if(res.data.flag){
+                                   this.checkitemIds = res.data.data;
+                               }else{
+                                   this.$message.error(res.data.message);
+                               }
+                            });
+                        }else {
+                            //查询检查项数据失败
+                            this.$message.error(res.data.message);
+                        }
+                    });
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
+                    this.pagination.currentPage = currentPage;
+                    this.findPage();
                 },
                 // 删除
                 handleDelete(row) {
