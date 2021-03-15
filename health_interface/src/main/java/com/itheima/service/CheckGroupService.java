@@ -15,4 +15,5 @@ public interface CheckGroupService {
     public List<Integer> findCheckItemIdsByCheckGroupId(Integer id);
     public void edit(CheckGroup checkGroup,Integer[] checkitemIds);
     public void deleteById(Integer id);
+    public List<CheckGroup> findAll();
 }
