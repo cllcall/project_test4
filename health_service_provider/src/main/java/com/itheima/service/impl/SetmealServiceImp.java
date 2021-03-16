@@ -1,8 +1,13 @@
 package com.itheima.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.itheima.constant.RedisConstant;
 import com.itheima.dao.SetmealDao;
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
+import com.itheima.pojo.CheckGroup;
 import com.itheima.pojo.Setmeal;
 import com.itheima.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +35,16 @@ public class SetmealServiceImp implements SetmealService{
         //将图片名称保存到Radis集合中
         String fileName = setmeal.getImg();
         jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES,fileName);
+    }
+
+    //分页查询
+    public PageResult pageQuery(QueryPageBean queryPageBean) {
+        Integer currentPage = queryPageBean.getCurrentPage();
+        Integer pageSize = queryPageBean.getPageSize();
+        String queryString = queryPageBean.getQueryString();
+        PageHelper.startPage(currentPage,pageSize);
+        Page<CheckGroup> page = setmealDao.findByCondition(queryString);
+        return new PageResult(page.getTotal(),page.getResult());
     }
 
     //设置套餐和检查组多对多关系，操作t_setmeal_checkgroup

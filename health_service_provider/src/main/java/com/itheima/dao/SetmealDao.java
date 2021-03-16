@@ -10,4 +10,5 @@ import java.util.Map;
 public interface SetmealDao {
     public void add(Setmeal setmeal);
     public void setSetmealAndCheckgroup(Map map);
+    public Page<CheckGroup> findByCondition(String queryString);
 }
