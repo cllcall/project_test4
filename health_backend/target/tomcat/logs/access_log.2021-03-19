@@ -1,0 +1,4 @@
+0:0:0:0:0:0:0:1 - - [19/Mar/2021:23:05:39 +0800] "GET /pages/main.html HTTP/1.1" 200 7455 http-bio-82-exec-1 38
+0:0:0:0:0:0:0:1 - - [19/Mar/2021:23:05:40 +0800] "GET /pages/setmeal.html HTTP/1.1" 304 - http-bio-82-exec-3 14
+0:0:0:0:0:0:0:1 - - [19/Mar/2021:23:05:40 +0800] "GET /favicon.ico HTTP/1.1" 404 973 http-bio-82-exec-2 4
+0:0:0:0:0:0:0:1 - - [19/Mar/2021:23:05:41 +0800] "POST /setmeal/findPage.do HTTP/1.1" 200 1931 http-bio-82-exec-4 629
