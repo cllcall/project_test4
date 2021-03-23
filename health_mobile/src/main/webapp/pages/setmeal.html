@@ -51,7 +51,7 @@
             setmealList:[]
         },
         mounted (){
-            axios.post("/setmeal/getSetmeal.do").then((response)=>{
+            axios.post("/setmeal/getAllSetmeal.do").then((response)=>{
                 if(response.data.flag){
                     this.setmealList = response.data.data;
                 }else{
