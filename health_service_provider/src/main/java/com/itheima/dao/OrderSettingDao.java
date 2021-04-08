@@ -12,4 +12,7 @@ public interface OrderSettingDao {
     public void editNumeberByOrderDate(OrderSetting orderSetting);
     public long findCountByOrderDate(Date orderDate);
     public List<OrderSetting> getOrderSettingByMonth(Map map);
+    public OrderSetting findByOrderDate(Date orderDate);
+    //更新已预约人数
+    public void editReservationsByOrderDate(OrderSetting orderSetting);
 }

@@ -71,12 +71,12 @@
                 <div class="table-content">
                     <ul class="table-list">
                         <#list setmeal.checkGroups as checkgroup>
-                        <li class="table-item" v-for="checkgroup in setmeal.checkGroups">
+                        <li class="table-item">
                             <div class="item flex2">${checkgroup.name}</div>
                             <div class="item flex3">
                                 <#list checkgroup.checkItems as checkItem>
                                 <label>
-                                    ${checkitem.name}
+                                    ${checkItem.name}
                                 </label>
                                 </#list>
                             </div>
