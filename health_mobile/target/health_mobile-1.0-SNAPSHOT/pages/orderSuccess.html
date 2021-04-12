@@ -65,8 +65,8 @@
             data:{
                 orderInfo:{}
             },
-            mounted(){
-                axios.post("/setmeal/findById.do?id=" + id).then((response) => {
+            created(){
+                axios.post("/order/findById.do?id=" + id).then((response) => {
                     this.orderInfo = response.data.data;
                 });
             }
