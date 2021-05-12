@@ -26,7 +26,7 @@
                 <#list setmealList as setmeal>
                 <li class="list-item">
                     <a class="link-page" href="setmeal_detail_${setmeal.id}.html">
-                        <img class="img-object f-left" src="http://qq00dhyu4.hd-bkt.clouddn.com/${setmeal.img}" alt="">
+                        <img class="img-object f-left" src="http://qt00vp3ci.hd-bkt.clouddn.com/${setmeal.img}" alt="">
                         <div class="item-body">
                             <h4 class="ellipsis item-title">${setmeal.name}</h4>
                             <p class="ellipsis-more item-desc">${setmeal.remark}</p>
